@@ -1,10 +1,21 @@
-<form action="/update/{{product.0}}"  method="POST">
+{% extends 'layout.html' %}
 
-    <input type="text" name="product" placeholder="product" value="{{ product.1}}">
-    <input type="text" name="phone" placeholder="phone" value="{{ product.2}}">
-    <input type="text" name="email" placeholder="email" value="{{ product.3}}">
-    <button type="submit">
-        save
-    </button>
+{% block body %}
 
-</form>
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/update/{{product.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="product" placeholder="product" value="{{ product.1}}" class="form-control">
+            <input type="text" name="phone" placeholder="phone" value="{{ product.2}}" class="form-control">
+            <input type="text" name="email" placeholder="email" value="{{ product.3}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}

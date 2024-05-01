@@ -7,7 +7,7 @@ app = Flask (__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
-app.config['MYSQL_DB'] = 'Escuela'
+app.config['MYSQL_DB'] = 'Biblioteca'
 mysql=MySQL(app) 
 
 #setting
@@ -50,7 +50,7 @@ def add_contact():
         print(product)
         cur=mysql.connection.cursor()
         cur.execute("INSERT INTO Products (`name`) VALUES ('"+str(product)+"');")
-        flash('Producto Added successfully')
+        flash('ELEMENTO AGREGADO')
         # mycursor.execute("INSERT INTO `gish_listening_db`.`Media` (`name`, `id_mediaType`, `id_MediaStatus`) VALUES ('"+str(name)+"', '"+str(mediaType)+"', '1');")
         mysql.connection.commit()
         
@@ -74,7 +74,7 @@ def update_Product(id):
         cur.execute("UPDATE Products SET name='"+str(product)+"' WHERE id ="+(id))
         # (product, phone, email, id))   
         mysql.connection.commit()
-        flash('producto actualizado')
+        flash('ACTUALIZACION EXITOSA')
         return redirect(url_for('index'))
 
 @app.route('/delete/<string:id>')
@@ -82,7 +82,7 @@ def delete_Product(id):
     cur = mysql.connection.cursor()
     cur.execute(' DELETE  FROM Products WHERE id = {0}'.format(id))
     mysql.connection.commit()
-    flash('Producto eliminado')
+    flash('ELEMENTO ELIMINADO')
     return redirect(url_for('index'))
 
  
