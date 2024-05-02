@@ -19,20 +19,15 @@ todos = ['Comprar','Solicitud', 'entrega']
 def not_found(error):
     return render_template('404.html', error=error)
     
-@app.route('/')
-def index():
-    user_ip = request.remote_addr
-
-    response = make_response(redirect('/hello'))
-    response.set_cookie('user_ip', user_ip)
-
+@app.route('/getProducts')
+def getProducts():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM Products')
     data = cur.fetchall()
-    return render_template('index.html', Products=data)
+    return render_template('product.html', Products=data)
 
-@app.route('/hello')
-def hello():
+@app.route('/')
+def index():
     user_ip = request.cookies.get('user_ip')
     context = {
         'user_ip': user_ip,
@@ -41,20 +36,17 @@ def hello():
 
     return render_template('hello.html', **context)
 
-@app.route('/add_contact', methods=['POST'])
-def add_contact():
+@app.route('/add_product', methods=['POST'])
+def add_product():
     if request.method=="POST":
         product= request.form['product']
-        phone= request.form['phone']
-        email= request.form['email']
         print(product)
         cur=mysql.connection.cursor()
         cur.execute("INSERT INTO Products (`name`) VALUES ('"+str(product)+"');")
         flash('ELEMENTO AGREGADO')
         # mycursor.execute("INSERT INTO `gish_listening_db`.`Media` (`name`, `id_mediaType`, `id_MediaStatus`) VALUES ('"+str(name)+"', '"+str(mediaType)+"', '1');")
-        mysql.connection.commit()
-        
-        return redirect(url_for('index'))
+        mysql.connection.commit()        
+        return redirect(url_for('product'))
         
 
 @app.route('/edit/<id>')
@@ -68,14 +60,12 @@ def get_Product(id):
 def update_Product(id):
     if request.method == 'POST':
         product= request.form['product']
-        phone= request.form['phone']
-        email= request.form['email']
         cur = mysql.connection.cursor()
         cur.execute("UPDATE Products SET name='"+str(product)+"' WHERE id ="+(id))
         # (product, phone, email, id))   
         mysql.connection.commit()
         flash('ACTUALIZACION EXITOSA')
-        return redirect(url_for('index'))
+        return redirect(url_for('product'))
 
 @app.route('/delete/<string:id>')
 def delete_Product(id):
@@ -83,6 +73,6 @@ def delete_Product(id):
     cur.execute(' DELETE  FROM Products WHERE id = {0}'.format(id))
     mysql.connection.commit()
     flash('ELEMENTO ELIMINADO')
-    return redirect(url_for('index'))
+    return redirect(url_for('product'))
 
  
