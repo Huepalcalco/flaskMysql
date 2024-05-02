@@ -1,0 +1,49 @@
+{% with messages = get_flashed_messages ()  %}
+{% if messages%}
+{%for message in messages %}
+    <p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form action="/add_autor", method="POST">
+
+    <input type="text" name="Nombre" placeholder="Nombre autor">
+    <input type="text" name="Apellido_pat" placeholder="Apellido paterno">
+    <input type="text" name="Last_update" placeholder="Ultima actualizacion">
+    <input type="text" name="Pais" placeholder="Pais">
+   
+    <button type="submit">
+        save
+    </button>
+
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <td> id </td>
+            <td> Nombre </td>
+            <td> Apellido Paterno </td>
+            <td> Ultima actualizacion </td>
+            <td> Pais </td>
+           
+            <td> Operations </td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for Autor in Autors %}
+            <tr>
+                <td>{{ Autor.0}} </td>
+                <td>{{ Autor.1}} </td>
+                <td>{{ Autor.2}} </td>
+                <td>{{ Autor.3}} </td>
+                <td>{{ Autor.4}} </td>
+                <td>
+                    <a href = "/edit/{{ Autor.0}}">Edit</a>
+                    <a href = "/delete/{{Autor.0}}">Delete</a>
+                </td>
+            </tr>
+        {% endfor%}
+    </tbody>
+</table>

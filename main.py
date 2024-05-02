@@ -34,7 +34,7 @@ def index():
         'todos' : todos,
     }
 
-    return render_template('hello.html', **context)
+    return render_template('index.html', **context)
 
 @app.route('/add_product', methods=['POST'])
 def add_product():
@@ -75,4 +75,9 @@ def delete_Product(id):
     flash('ELEMENTO ELIMINADO')
     return redirect(url_for('product'))
 
- 
+@app.route('/autors')
+def getAutors():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM autor')
+    data = cur.fetchall()
+    return render_template('autor.html', Autors=data)
