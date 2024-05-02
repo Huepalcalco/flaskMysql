@@ -20,9 +20,11 @@
     {% endwith %}
 
         <div class="card card-body">
-            <form action="/add_product", method="POST">
+            <form action="/add_genero", method="POST">
                 <div class="form-group">
-                    <input type="text" name="product" placeholder="product" class="form-control">
+                    <input type="text" name="GENERO_ID" placeholder="GENERO_ID" class="form-control">
+                    <input type="text" name="GENERO" placeholder="GENERO" class="form-control">
+                    <input type="text" name="LAST_UPDATE" placeholder="LAST_UPDATE paterno" class="form-control">
                     <button type="submit" class="btn btn-primary btn-block">
                         save
                     </button>
@@ -35,17 +37,20 @@
         <table class="table table-striped table-bordered bg-white table-sm">
             <thead>
                 <tr>
-                    <td> Product </td>
-                    <td> Operations </td>
+                    <td> GENERO_ID  </td>
+                    <td> GENERO </td>
+                    <td> LAST_UPDATE </td>
                 </tr>
             </thead>
             <tbody>
-                {% for Product in Products %}
+                {% for Genero in Generos %}
                     <tr>
-                        <td>{{ Product.1}} </td>
+                        <td>{{ Genero.0}} </td>
+                        <td>{{ Genero.1}} </td>
+                        <td>{{ Genero.2}} </td>
                         <td>
-                            <a href = "/editProduct/{{ Product.0}}" class="btn btn-secondary">Edit</a>
-                            <a href = "/deleteProduct/{{Product.0}}" class="btn btn-danger">Delete</a>
+                            <a href = "/editGenero/{{ Genero.0}}" class="btn btn-secondary">Edit</a>
+                            <a href = "/deleteGenero/{{Genero.0}}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 {% endfor%}

@@ -19,12 +19,6 @@ todos = ['Comprar','Solicitud', 'entrega']
 def not_found(error):
     return render_template('404.html', error=error)
     
-@app.route('/getProducts')
-def getProducts():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM Products')
-    data = cur.fetchall()
-    return render_template('product.html', Products=data)
 
 @app.route('/')
 def index():
@@ -35,6 +29,13 @@ def index():
     }
 
     return render_template('index.html', **context)
+
+@app.route('/getProducts')
+def getProducts():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM Products')
+    data = cur.fetchall()
+    return render_template('product.html', Products=data)
 
 @app.route('/add_product', methods=['POST'])
 def add_product():
@@ -48,15 +49,14 @@ def add_product():
         mysql.connection.commit()        
         return redirect(url_for('product'))
         
-
-@app.route('/edit/<id>')
+@app.route('/editProduct/<id>')
 def get_Product(id):
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM Products WHERE id ='+(id))
     data = cur.fetchall()
     return render_template('edit-product.html', product = data[0])
 
-@app.route('/update/<id>', methods= ['POST'])
+@app.route('/updateProduct/<id>', methods= ['POST'])
 def update_Product(id):
     if request.method == 'POST':
         product= request.form['product']
@@ -65,16 +65,18 @@ def update_Product(id):
         # (product, phone, email, id))   
         mysql.connection.commit()
         flash('ACTUALIZACION EXITOSA')
-        return redirect(url_for('product'))
+        return redirect(url_for('getProducts'))
 
-@app.route('/delete/<string:id>')
+@app.route('/deleteProduct/<string:id>')
 def delete_Product(id):
     cur = mysql.connection.cursor()
     cur.execute(' DELETE  FROM Products WHERE id = {0}'.format(id))
     mysql.connection.commit()
     flash('ELEMENTO ELIMINADO')
-    return redirect(url_for('product'))
+    return redirect(url_for('getProducts'))
 
+
+#tabla autor
 @app.route('/autors')
 def getAutors():
     cur = mysql.connection.cursor()
@@ -82,252 +84,270 @@ def getAutors():
     data = cur.fetchall()
     return render_template('autor.html', Autors=data)
 
-@app.route('/edit/<id>')
+@app.route('/editAutors/<id>')
 def get_Autor(id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM autor WHERE id ='+(id))
+    cur.execute("SELECT * FROM autor WHERE  AUTOR_ID='{0}'".format(id))
     data = cur.fetchall()
-    return render_template('edit-Autor.html', autor = data[0])
+    return render_template('edit-autor.html', autor = data[0])
 
+@app.route('/add_autor', methods=['POST'])
+def add_autor():
+    if request.method=="POST":
+        AUTOR_ID= request.form['AUTOR_ID']
+        NOMBRE= request.form['NOMBRE']
+        APELLIDO_PAT= request.form['APELLIDO_PAT']
+        LAST_UPDATE= request.form['LAST_UPDATE']
+        PAIS_ID= request.form['PAIS_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO autor (`AUTOR_ID`,`NOMBRE`,`APELLIDO_PAT`,`LAST_UPDATE`,`PAIS_ID`) VALUES ('"+str(AUTOR_ID)+"', '"+str(NOMBRE)+"', '"+str(APELLIDO_PAT)+"','"+str(LAST_UPDATE)+"','"+str(PAIS_ID)+"');")
+        flash('AUTOR AGREGADO')
+        # mycursor.execute("INSERT INTO `gish_listening_db`.`Media` (`name`, `id_mediaType`, `id_MediaStatus`) VALUES ('"+str(name)+"', '"+str(mediaType)+"', '1');")
+        mysql.connection.commit()        
+        return redirect(url_for('getAutors'))
 
-@app.route('/autoria')
-def getAutoria():
+@app.route('/updateAutor/<id>', methods= ['POST'])
+def update_autor(id):
+    if request.method == 'POST':
+        AUTOR_ID= request.form['AUTOR_ID']
+        NOMBRE= request.form['NOMBRE']
+        APELLIDO_PAT= request.form['APELLIDO_PAT']
+        LAST_UPDATE= request.form['LAST_UPDATE']
+        PAIS_ID= request.form['PAIS_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE autor  SET AUTOR_ID='"+str(AUTOR_ID)+"', NOMBRE='"+str(NOMBRE)+"', APELLIDO_PAT='"+str(APELLIDO_PAT)+"', LAST_UPDATE='"+str(LAST_UPDATE)+"',PAIS_ID='"+str(PAIS_ID)+"' WHERE AUTOR_ID ='"+(AUTOR_ID)+"'")
+        mysql.connection.commit()
+        flash('ACTUALIZACION EXITOSA')
+        return redirect(url_for('getAutors'))
+
+@app.route('/deleteAutor/<string:id>')
+def delete_Autor(id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM autoria')
-    data = cur.fetchall()
-    return render_template('autoria.html', Autoria=data)
-
-@app.route('/edit/<id>')
-def get_Atoria(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM autoria WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-autoria.html', autoria = data[0])
+    cur.execute("DELETE  FROM autor WHERE AUTOR_ID = '{0}'".format(id))
+    mysql.connection.commit()
+    flash('AUTOR ELIMINADO')
+    return redirect(url_for('getAutors'))
 
 
+# tabla cliente
 @app.route('/cliente')
-def getCliente():
+def getClientes():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM cliente')
     data = cur.fetchall()
     return render_template('cliente.html', Clientes=data)
 
-@app.route('/edit/<id>')
+@app.route('/editCliente/<id>')
 def get_Cliente(id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM cliente WHERE id ='+(id))
+    cur.execute('SELECT * FROM cliente WHERE CLIENTE_ID ='+(id))
     data = cur.fetchall()
+    print(data[0])
     return render_template('edit-cliente.html', cliente = data[0])
 
+@app.route('/add_cliente', methods=['POST'])
+def add_cliente():
+    if request.method=="POST":
+        CLIENTE_ID= request.form['CLIENTE_ID']
+        NOMBRE= request.form['NOMBRE']
+        APELLIDO_PAT= request.form['APELLIDO_PAT']
+        APELLIDO_MAT= request.form['APELLIDO_MAT']
+        CORREO= request.form['CORREO']
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        ESCOLARIDAD_ID= request.form['ESCOLARIDAD_ID']
+        CREDENCIAL_ID= request.form['CREDENCIAL_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO cliente (`CLIENTE_ID`,`NOMBRE`,`APELLIDO_PAT`,`APELLIDO_MAT`,`CORREO`,`DIRECCION_ID`,`ESCOLARIDAD_ID`, `CREDENCIAL_ID`) VALUES ('"+str(CLIENTE_ID)+"', '"+str(NOMBRE)+"', '"+str(APELLIDO_PAT)+"','"+str(APELLIDO_MAT)+"','"+str(CORREO)+"','"+str(DIRECCION_ID)+"','"+str(ESCOLARIDAD_ID)+"','"+str(CREDENCIAL_ID)+"');")
+        flash('CLIENTE AGREGADO')
+        # mycursor.execute("INSERT INTO `gish_listening_db`.`Media` (`name`, `id_mediaType`, `id_MediaStatus`) VALUES ('"+str(name)+"', '"+str(mediaType)+"', '1');")
+        mysql.connection.commit()        
+        return redirect(url_for('getClientes'))
 
-@app.route('/credencial')
-def getCredencial():
+@app.route('/updateCliente/<id>', methods= ['POST'])
+def update_cliente(id):
+    if request.method == 'POST':
+        CLIENTE_ID= request.form['CLIENTE_ID']
+        NOMBRE= request.form['NOMBRE']
+        APELLIDO_PAT= request.form['APELLIDO_PAT']
+        APELLIDO_MAT= request.form['APELLIDO_MAT']
+        CORREO= request.form['CORREO']
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        ESCOLARIDAD_ID= request.form['ESCOLARIDAD_ID']
+        CREDENCIAL_ID= request.form['CREDENCIAL_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE cliente  SET CLIENTE_ID='"+str(CLIENTE_ID)+"', NOMBRE='"+str(NOMBRE)+"', APELLIDO_PAT='"+str(APELLIDO_PAT)+"', APELLIDO_MAT='"+str(APELLIDO_MAT)+"',CORREO='"+str(CORREO)+"',DIRECCION_ID='"+str(DIRECCION_ID)+"',ESCOLARIDAD_ID='"+str(ESCOLARIDAD_ID)+"', CREDENCIAL_ID='"+str(CREDENCIAL_ID)+"' WHERE CLIENTE_ID ="+(CLIENTE_ID))
+        mysql.connection.commit()
+        flash('ACTUALIZACION EXITOSA')
+        return redirect(url_for('getClientes'))
+
+@app.route('/deleteCliente/<string:id>')
+def delete_Cliente(id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM credencial')
-    data = cur.fetchall()
-    return render_template('credencial.html', Credencial=data)
+    cur.execute(' DELETE  FROM cliente WHERE CLIENTE_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('CLIENTE ELIMINADO')
+    return redirect(url_for('getClientes'))
 
-@app.route('/edit/<id>')
-def get_Credencial(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM credencial WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-credencial.html', credencial = data[0])
-
-
-@app.route('/d_prestamo')
-def getD_prestamo():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM detalles_prestamo')
-    data = cur.fetchall()
-    return render_template('d_prestamo.html', D_prestamo=data)
-
-@app.route('/edit/<id>')
-def get_D_presamo(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM detalles_prestamo WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-d_prestamos.html', D_prestamos = data[0])
-
-
-@app.route('/direccion')
-def getDireccion():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM direccion')
-    data = cur.fetchall()
-    return render_template('direccion.html', Direccion=data)
-
-@app.route('/edit/<id>')
-def get_Direccion(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM direccion WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-direccion.html', direccion = data[0])
-
-
-@app.route('/editorial')
-def getEditoail():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM editorial')
-    data = cur.fetchall()
-    return render_template('editorial.html', Editorial=data)
-
-@app.route('/edit/<id>')
-def get_Editorial(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM editorial WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-editorial.html', editorial = data[0])
-
-
-@app.route('/empleado')
-def getEmpleado():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM empleado')
-    data = cur.fetchall()
-    return render_template('empleado.html', Empleado=data)
-
-@app.route('/edit/<id>')
-def get_Empleado(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM empleado WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-empleado.html', empleado = data[0])
-
-
-@app.route('/escolaridad')
-def getEscolaridad():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM escolaridad')
-    data = cur.fetchall()
-    return render_template('escolaridad.html', Escolaridad=data)
-
-@app.route('/edit/<id>')
-def get_Escolaridad(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM escolaridad WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-escolaridad.html', escolaridad = data[0])
-
-
-@app.route('/estado')
-def getEstado():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM estado')
-    data = cur.fetchall()
-    return render_template('estado.html', Estado=data)
-
-@app.route('/edit/<id>')
-def get_Estado(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM estado WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-estado.html', estado = data[0])
-
-
-@app.route('/genero')
-def getGenero():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM genero')
-    data = cur.fetchall()
-    return render_template('genero.html', Genero=data)
-
-@app.route('/edit/<id>')
-def get_Genero(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM genero WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-genero.html', genero = data[0])
-
-
-@app.route('/idioma')
-def getIdioma():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM idiona')
-    data = cur.fetchall()
-    return render_template('idioma.html', Idioma=data)
-
-@app.route('/edit/<id>')
-def get_Idioma(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM idioma WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-idioma.html', idioma = data[0])
-
-
-@app.route('/libro')
-def getLibro():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM libro')
-    data = cur.fetchall()
-    return render_template('libro.html', Libro=data)
-
-@app.route('/edit/<id>')
-def get_Libro(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM libro WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-libro.html', libro = data[0])
-
-@app.route('/pais')
-def getPais():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM pais')
-    data = cur.fetchall()
-    return render_template('pais.html', Pais=data)
-
-@app.route('/edit/<id>')
-def get_Pais(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM pais WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-pais.html', pais = data[0])
-
-
-@app.route('/prestamo')
-def getPrestamo():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM prestamo')
-    data = cur.fetchall()
-    return render_template('prestamo.html', Prestamo=data)
-
-@app.route('/edit/<id>')
-def get_Prestamo(id):
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM prestamo WHERE id ='+(id))
-    data = cur.fetchall()
-    return render_template('edit-prestamo.html', prestamo = data[0])
-
+#tabla sucursal
 
 @app.route('/sucursal')
-def getSucursal():
+def getSucursales():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM sucursal')
     data = cur.fetchall()
-    return render_template('sucursal.html', Sucursal=data)
+    return render_template('sucursal.html', Sucursales=data)
 
-@app.route('/edit/<id>')
+@app.route('/editSucursal/<id>')
 def get_Sucursal(id):
     cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM sucursal WHERE id ='+(id))
+    cur.execute('SELECT * FROM sucursal WHERE SUCURSAL_ID ='+(id))
     data = cur.fetchall()
+    print(data[0])
     return render_template('edit-sucursal.html', sucursal = data[0])
 
+@app.route('/add_sucursal', methods=['POST'])
+def add_sucursal():
+    if request.method=="POST":
+        SUCURSAL_ID= request.form['SUCURSAL_ID']
+        NOMBRE= request.form['NOMBRE']
+        LADA= request.form['LADA']
+        TELEFONO= request.form['TELEFONO']
+        EXTENSION= request.form['EXTENSION']
+        PAGINA_WEB= request.form['PAGINA_WEB']
+        HORA_APERTURA= request.form['HORA_APERTURA']
+        HORA_CIERRE= request.form['HORA_CIERRE']
+        CORREO= request.form['CORREO']
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO sucursal (`SUCURSAL_ID`,`NOMBRE`,`LADA`,`TELEFONO`,`EXTENSION`,`PAGINA_WEB`,`HORA_APERTURA`, `HORA_CIERRE`, `CORREO`, `DIRECCION_ID`) VALUES ('"+str(SUCURSAL_ID)+"', '"+str(NOMBRE)+"', '"+str(LADA)+"','"+str(TELEFONO)+"','"+str(EXTENSION)+"','"+str(PAGINA_WEB)+"','"+str(HORA_APERTURA)+"','"+str(HORA_CIERRE)+"','"+str(CORREO)+"','"+str(DIRECCION_ID)+"');")
+        flash('SUCURSAL AGREGADO')
+        # mycursor.execute("INSERT INTO `gish_listening_db`.`Media` (`name`, `id_mediaType`, `id_MediaStatus`) VALUES ('"+str(name)+"', '"+str(mediaType)+"', '1');")
+        mysql.connection.commit()        
+        return redirect(url_for('getSucursales'))
+
+@app.route('/updateSucursal/<id>', methods= ['POST'])
+def update_sucursal(id):
+    if request.method == 'POST':
+        SUCURSAL_ID= request.form['SUCURSAL_ID']
+        NOMBRE= request.form['NOMBRE']
+        LADA= request.form['LADA']
+        TELEFONO= request.form['TELEFONO']
+        EXTENSION= request.form['EXTENSION']
+        PAGINA_WEB= request.form['PAGINA_WEB']
+        HORA_APERTURA= request.form['HORA_APERTURA']
+        HORA_CIERRE= request.form['HORA_CIERRE']
+        CORREO= request.form['CORREO']
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE sucursal  SET SUCURSAL_ID='"+str(SUCURSAL_ID)+"', NOMBRE='"+str(NOMBRE)+"', LADA='"+str(LADA)+"', TELEFONO='"+str(TELEFONO)+"', EXTENSION='"+str(EXTENSION)+"',PAGINA_WEB='"+str(PAGINA_WEB)+"',HORA_APERTURA='"+str(HORA_APERTURA)+"',HORA_CIERRE='"+str(HORA_CIERRE)+"', CORREO='"+str(CORREO)+"', DIRECCION_ID='"+str(DIRECCION_ID)+"' WHERE SUCURSAL_ID ="+(SUCURSAL_ID))
+        mysql.connection.commit()
+        flash('ACTUALIZACION EXITOSA')
+        return redirect(url_for('getSucursales'))
+
+@app.route('/deleteSucursal/<string:id>')
+def delete_Sucursal(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM sucursal WHERE SUCURSAL_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('SUCURSAL ELIMINADA')
+    return redirect(url_for('getSucursales'))
 
 
+#tabla idioma
+
+@app.route('/idioma')
+def getIdiomas():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM idioma')
+    data = cur.fetchall()
+    return render_template('idioma.html', Idiomas=data)
+
+@app.route('/editIdioma/<id>')
+def get_Idioma(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM idioma WHERE IDIOMA_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-idioma.html', idioma = data[0])
+
+@app.route('/add_idioma', methods=['POST'])
+def add_idioma():
+    if request.method=="POST":
+        IDIOMA_ID=request.form['IDIOMA_ID']
+        IDIOMA=request.form['IDIOMA']
+        LAST_UPDATE=request.form['LAST_UPDATE']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO idioma (IDIOMA_ID, IDIOMA, LAST_UPDATE) VALUES ('"+str(IDIOMA_ID)+"','"+str(IDIOMA)+"','"+str(LAST_UPDATE)+"');")
+        flash('Idioma Agregado')
+        mysql.connection.commit()
+        return redirect(url_for('getIdiomas'))
+        
+@app.route('/updateIdioma/<id>', methods= ['POST'])
+def update_idioma(id):
+    if request.method == 'POST':
+        IDIOMA_ID=request.form['IDIOMA_ID']
+        IDIOMA=request.form['IDIOMA']
+        LAST_UPDATE=request.form['LAST_UPDATE']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE idioma SET IDIOMA_ID='"+str(IDIOMA_ID)+"',IDIOMA='"+str(IDIOMA)+"',LAST_UPDATE='"+str(LAST_UPDATE)+"' WHERE IDIOMA_ID ="+(IDIOMA_ID)) 
+        mysql.connection.commit()
+        flash('Idioma actualizado')
+        return redirect(url_for('getIdiomas'))
+
+@app.route('/deleteIdioma/<string:id>')
+def delete_Idioma(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM idioma WHERE IDIOMA_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('Idioma eliminado')
+    return redirect(url_for('getIdiomas'))
 
 
+# tabla genero
 
+@app.route('/genero')
+def getGeneros():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM genero')
+    data = cur.fetchall()
+    return render_template('genero.html', Generos=data)
 
+@app.route('/editGenero/<id>')
+def get_Genero(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM genero WHERE GENERO_ID ='+(id))
+    data = cur.fetchall()
+    print(data[0])
+    return render_template('edit-genero.html', genero = data[0])
 
+@app.route('/add_genero', methods=['POST'])
+def add_genero():
+    if request.method=="POST":
+        GENERO_ID= request.form['GENERO_ID']
+        GENERO= request.form['GENERO']
+        LAST_UPDATE= request.form['LAST_UPDATE']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO genero (GENERO_ID, GENERO, LAST_UPDATE) VALUES ('"+str(GENERO_ID)+"', '"+str(GENERO)+"', '"+str(LAST_UPDATE)+"');")
+        flash('GENERO AGREGADO')
+        # mycursor.execute("INSERT INTO gish_listening_db.Media (name, id_mediaType, id_MediaStatus) VALUES ('"+str(name)+"', '"+str(mediaType)+"', '1');")
+        mysql.connection.commit()        
+        return redirect(url_for('getGeneros'))
 
+@app.route('/updateGenero/<id>', methods= ['POST'])
+def update_genero(id):
+    if request.method == 'POST':
+        GENERO_ID= request.form['GENERO_ID']
+        GENERO= request.form['GENERO']
+        LAST_UPDATE= request.form['LAST_UPDATE']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE genero SET GENERO_ID='"+str(GENERO_ID)+"',GENERO='"+str(GENERO)+"',LAST_UPDATE='"+str(LAST_UPDATE)+"' WHERE GENERO_ID ="+(GENERO_ID)) 
+        mysql.connection.commit()
+        flash('ACTUALIZACION EXITOSA')
+        return redirect(url_for('getGeneros'))
 
-
-
-
-
-
-
-
-
-
+@app.route('/deleteGenero/<string:id>')
+def delete_Genero(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE FROM genero WHERE GENERO_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('GENERO ELIMINADO')
+    return redirect(url_for('getGeneros')) 

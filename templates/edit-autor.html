@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/updateAutor/{{autor.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="AUTOR_ID" placeholder="AUTOR_ID" value="{{ autor.0}}" class="form-control">
+            <input type="text" name="NOMBRE" placeholder="NOMBRE" value="{{ autor.1}}" class="form-control">
+            <input type="text" name="APELLIDO_PAT" placeholder="APELLIDO_PAT" value="{{ autor.2}}" class="form-control">
+            <input type="text" name="LAST_UPDATE" placeholder="LAST_UPDATE" value="{{ autor.3}}" class="form-control">
+            <input type="text" name="PAIS_ID" placeholder="PAIS_ID" value="{{ autor.4}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}

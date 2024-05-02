@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/updateSucursal/{{sucursal.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="SUCURSAL_ID" placeholder="SUCURSAL_ID" value="{{ sucursal.0}}" class="form-control">
+            <input type="text" name="NOMBRE" placeholder="NOMBRE" value="{{ sucursal.1}}" class="form-control">
+            <input type="text" name="LADA" placeholder="LADA" value="{{ sucursal.2}}" class="form-control">
+            <input type="text" name="TELEFONO" placeholder="TELEFONO" value="{{ sucursal.3}}" class="form-control">
+            <input type="text" name="EXTENSION" placeholder="EXTENSION" value="{{ sucursal.4}}" class="form-control">
+            <input type="text" name="PAGINA_WEB" placeholder="PAGINA_WEB" value="{{ sucursal.5}}" class="form-control">
+            <input type="text" name="HORA_APERTURA" placeholder="HORA_APERTURA" value="{{ sucursal.6}}" class="form-control">
+            <input type="text" name="HORA_CIERRE" placeholder="HORA_CIERRE" value="{{ sucursal.7}}" class="form-control">
+            <input type="text" name="CORREO" placeholder="CORREO" value="{{ sucursal.8}}" class="form-control">
+            <input type="text" name="DIRECCION_ID" placeholder="DIRECCION_ID" value="{{ sucursal.9}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}

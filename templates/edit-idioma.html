@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/updateIdioma/{{idioma.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="IDIOMA_ID" placeholder="IDIOMA_ID" value="{{ idioma.0}}" class="form-control">
+            <input type="text" name="IDIOMA" placeholder="IDIOMA" value="{{ idioma.1}}" class="form-control">
+            <input type="text" name="LAST_UPDATE" placeholder="LAST_UPDATE" value="{{idioma.2}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}

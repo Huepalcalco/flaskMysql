@@ -20,12 +20,16 @@
     {% endwith %}
 
         <div class="card card-body">
-            <form action="/add_Cliente", method="POST">
+            <form action="/add_cliente", method="POST">
                 <div class="form-group">
-                    <input type="text" name="id" placeholder="id" class="form-control">
-                    <input type="text" name="Cliente" placeholder="Cliente" class="form-control">
-                    <input type="text" name="apellidoPat" placeholder="apellido paterno" class="form-control">
-                    <input type="text" name="pais" placeholder="pais" class="form-control">
+                    <input type="text" name="CLIENTE_ID" placeholder="CLIENTE_ID" class="form-control">
+                    <input type="text" name="NOMBRE" placeholder="NOMBRE" class="form-control">
+                    <input type="text" name="APELLIDO_PAT" placeholder="APELLIDO_PAT paterno" class="form-control">
+                    <input type="text" name="APELLIDO_MAT" placeholder="APELLIDO_MAT" class="form-control">
+                    <input type="text" name="CORREO" placeholder="CORREO" class="form-control">
+                    <input type="text" name="DIRECCION_ID" placeholder="DIRECCION_ID" class="form-control">
+                    <input type="text" name="ESCOLARIDAD_ID" placeholder="ESCOLARIDAD_ID" class="form-control">
+                    <input type="text" name="CREDENCIAL_ID" placeholder="CREDENCIAL_ID" class="form-control">
                     <button type="submit" class="btn btn-primary btn-block">
                         save
                     </button>
@@ -61,8 +65,8 @@
                         <td>{{ Cliente.6}} </td>
                         <td>{{ Cliente.7}} </td>
                         <td>
-                            <a href = "/edit/{{ Cliente.0}}" class="btn btn-secondary">Edit</a>
-                            <a href = "/delete/{{Cliente.0}}" class="btn btn-danger">Delete</a>
+                            <a href = "/editCliente/{{ Cliente.0}}" class="btn btn-secondary">Edit</a>
+                            <a href = "/deleteCliente/{{Cliente.0}}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 {% endfor%}
