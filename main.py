@@ -351,3 +351,103 @@ def delete_Genero(id):
     mysql.connection.commit()
     flash('GENERO ELIMINADO')
     return redirect(url_for('getGeneros')) 
+
+
+#TABLA EDITORIAL
+
+@app.route('/editorial')
+def getEditoriales():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM editorial')
+    data = cur.fetchall()
+    return render_template('editorial.html', Editoriales=data)
+
+@app.route('/editEditorial/<id>')
+def get_Editorial(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM editorial WHERE EDITORIAL_ID ='{0}'".format(id))
+    data = cur.fetchall()
+    return render_template('edit-editorial.html', editorial= data[0])
+
+@app.route('/add_editorial', methods=['POST'])
+def add_editorial():
+    if request.method=="POST":
+        EDITORIAL_ID=request.form['EDITORIAL_ID']
+        EDITORIAL=request.form['EDITORIAL']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO editorial (EDITORIAL_ID, EDITORIAL) VALUES ('"+str(EDITORIAL_ID)+"','"+str(EDITORIAL)+"');")
+        flash('Editorial Agregado con éxito')
+        mysql.connection.commit()
+        return redirect(url_for('getEditoriales'))
+        
+@app.route('/updateEditorial/<id>', methods= ['POST'])
+def update_editorial(id):
+    if request.method == 'POST':
+        EDITORIAL_ID=request.form['EDITORIAL_ID']
+        EDITORIAL=request.form['EDITORIAL']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE editorial SET EDITORIAL_ID='"+str(EDITORIAL_ID)+"',EDITORIAL='"+str(EDITORIAL)+"' WHERE EDITORIAL_ID ='"+(EDITORIAL_ID)+"'")
+        mysql.connection.commit()
+        flash('Editorial actualizado')
+        return redirect(url_for('getEditoriales'))
+
+@app.route('/deleteEditorial/<string:id>')
+def delete_Editorial(id):
+    cur = mysql.connection.cursor()
+    cur.execute(" DELETE  FROM editorial WHERE EDITORIAL_ID = '{0}'".format(id))
+    mysql.connection.commit()
+    flash('Editorial eliminado')
+    return redirect(url_for('getEditoriales'))
+
+
+#------------TABLA PAIS----------------------------
+@app.route('/Pais')
+def getPaises():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM pais')
+    data = cur.fetchall()
+    return render_template('pais.html', Paises=data)
+
+
+@app.route('/editPais/<id>')
+def get_Pais(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM pais WHERE PAIS_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-pais.html', pais= data[0])
+
+@app.route('/add_pais', methods=['POST'])
+def add_pais():
+    if request.method=="POST":
+        PAIS_ID= request.form['PAIS_ID']
+        PAIS= request.form['PAIS']
+        LAST_UPDATE= request.form['LAST_UPDATE']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO pais (PAIS_ID,PAIS,LAST_UPDATE) VALUES ('"+str(PAIS_ID)+"','"+str(PAIS)+"','"+str(LAST_UPDATE)+"');")
+        flash('Pais Agregado con éxito')
+        mysql.connection.commit()
+        return redirect(url_for('getPaises'))
+        
+@app.route('/updatePais/<id>', methods= ['POST'])
+def update_pais(id):
+    if request.method == 'POST':
+        PAIS_ID= request.form['PAIS_ID']
+        PAIS= request.form['PAIS']
+        LAST_UPDATE= request.form['LAST_UPDATE']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE pais SET PAIS_ID='"+str(PAIS_ID)+"',PAIS='"+str(PAIS)+"',LAST_UPDATE='"+str(LAST_UPDATE)+"' WHERE PAIS_ID ="+(PAIS_ID)) 
+        mysql.connection.commit()
+        flash('Pais actualizado')
+        return redirect(url_for('getPaises'))
+
+@app.route('/deletePais/<string:id>')
+def delete_Pais(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM pais WHERE PAIS_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('Pais eliminado')
+    return redirect(url_for('getPaises'))
+
+
+
+

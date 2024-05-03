@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/updateEditorial/{{editorial.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="EDITORIAL_ID" placeholder="EDITORIAL_ID" value="{{ editorial.0}}" class="form-control">
+            <input type="text" name="EDITORIAL" placeholder="EDITORIAL" value="{{ editorial.1}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}
