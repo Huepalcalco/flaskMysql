@@ -20,13 +20,10 @@
     {% endwith %}
 
         <div class="card card-body">
-            <form action="/add_autor", method="POST">
+            <form action="/add_credencial", method="POST">
                 <div class="form-group">
-                    <input type="text" name="AUTOR_ID" placeholder="AUTOR_ID" class="form-control">
-                    <input type="text" name="NOMBRE" placeholder="NOMBRE" class="form-control">
-                    <input type="text" name="APELLIDO_PAT" placeholder="APELLIDO_PAT" class="form-control">
-                    <input type="text" name="LAST_UPDATE" placeholder="LAST_UPDATE" class="form-control">
-                    <input type="text" name="PAIS_ID" placeholder="PAIS_ID" class="form-control">
+                    <input type="text" name="CREDENCIAL_ID" placeholder="CREDENCIAL_ID" class="form-control">
+                    <input type="text" name="FECHA_RENOVACION" placeholder="FECHA_RENOVACION" class="form-control">
                     <button type="submit" class="btn btn-primary btn-block">
                         save
                     </button>
@@ -39,24 +36,18 @@
         <table class="table table-striped table-bordered bg-white table-sm">
             <thead>
                 <tr>
-                    <td> AUTOR_ID </td>
-                    <td> NOMBRE </td>
-                    <td> APELLIDO_PAT </td>
-                    <td> LAST_UPDATE </td>
-                    <td> PAIS_ID </td>
+                    <td> CREDENCIAL_ID  </td>
+                    <td> FECHA_RENOVACION </td>
                 </tr>
             </thead>
             <tbody>
-                {% for Autor in Autors %}
+                {% for Credencial in Credenciales %}
                     <tr>
-                        <td>{{ Autor.0}} </td>
-                        <td>{{ Autor.1}} </td>
-                        <td>{{ Autor.2}} </td>
-                        <td>{{ Autor.3}} </td>
-                        <td>{{ Autor.4}} </td>
+                        <td>{{ Credencial.0}} </td>
+                        <td>{{ Credencial.1}} </td>
                         <td>
-                            <a href = "/editAutors/{{ Autor.0}}" class="btn btn-secondary">Edit</a>
-                            <a href = "/deleteAutor/{{Autor.0}}" class="btn btn-danger">Delete</a>
+                            <a href = "/editCredencial/{{ Credencial.0}}" class="btn btn-secondary">Edit</a>
+                            <a href = "/deleteCredencial/{{Credencial.0}}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 {% endfor%}

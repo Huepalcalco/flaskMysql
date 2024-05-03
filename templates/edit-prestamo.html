@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/updatePrestamo/{{prestamo.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="PRESTAMO_ID" placeholder="PRESTAMO_ID" value="{{ prestamo.0}}" class="form-control">
+            <input type="text" name="FECHA_PRESTAMO" placeholder="FECHA_PRESTAMO" value="{{ prestamo.1}}" class="form-control">
+            <input type="text" name="FECHA_ENTREGA" placeholder="FECHA_ENTREGA" value="{{ prestamo.2}}" class="form-control">
+            <input type="text" name="CLIENTE_ID" placeholder="CLIENTE_ID" value="{{ prestamo.3}}" class="form-control">
+            <input type="text" name="EMPLEADO_ID" placeholder="EMPLEADO_ID" value="{{ prestamo.4}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}

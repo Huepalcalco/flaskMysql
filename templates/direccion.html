@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-md5">
+
+    {% with messages = get_flashed_messages ()  %}
+    {% if messages%}
+    {%for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+        <div class="card card-body">
+            <form action="/add_direccion", method="POST">
+                <div class="form-group">
+                    <input type="text" name="DIRECCION_ID" placeholder="DIRECCION_ID" class="form-control">
+                    <input type="text" name="ALCALDIA" placeholder="ALCALDIA" class="form-control">
+                    <input type="text" name="CP" placeholder="CP" class="form-control">
+                    <input type="text" name="CALLE" placeholder="CALLE" class="form-control">
+                    <input type="text" name="EXTERIOR" placeholder="EXTERIOR" class="form-control">
+                    <input type="text" name="INTERIOR" placeholder="INTERIOR" class="form-control">
+                    <input type="text" name="ESTADO_ID" placeholder="ESTADO_ID" class="form-control">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        save
+                    </button>
+                
+                </div>
+            </form> 
+        </div>
+    </div>
+    <div class="col-md7">
+        <table class="table table-striped table-bordered bg-white table-sm">
+            <thead>
+                <tr>
+                    <td> DIRECCION_ID </td>
+                    <td> ALCALDIA </td>
+                    <td> CP </td>
+                    <td> CALLE </td>
+                    <td> EXTERIOR </td>
+                    <td> INTERIOR </td>
+                    <td> ESTADO_ID </td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Direccion in Direcciones %}
+                    <tr>
+                        <td>{{ Direccion.0}} </td>
+                        <td>{{ Direccion.1}} </td>
+                        <td>{{ Direccion.2}} </td>
+                        <td>{{ Direccion.3}} </td>
+                        <td>{{ Direccion.4}} </td>
+                        <td>{{ Direccion.5}} </td>
+                        <td>{{ Direccion.6}} </td>
+                        <td>
+                            <a href = "/editDireccion/{{Direccion.0}}" class="btn btn-secondary">Edit</a>
+                            <a href = "/deleteDireccion/{{Direccion.0}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+    
+{% endblock %}
+

@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-md5">
+
+    {% with messages = get_flashed_messages ()  %}
+    {% if messages%}
+    {%for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+        <div class="card card-body">
+            <form action="/add_libro", method="POST">
+                <div class="form-group">
+                    <input type="text" name="LIBRO_ID" placeholder="LIBRO_ID" class="form-control">
+                    <input type="text" name="TITULO" placeholder="TITULO" class="form-control">
+                    <input type="text" name="EDICION" placeholder="EDICION" class="form-control">
+                    <input type="text" name="ANIO" placeholder="ANIO" class="form-control">
+                    <input type="text" name="NUM_PAGINAS" placeholder="NUM_PAGINAS" class="form-control">
+                    <input type="text" name="IDIOMA_ID" placeholder="IDIOMA_ID" class="form-control">
+                    <input type="text" name="GENERO_ID" placeholder="GENERO_ID" class="form-control">
+                    <input type="text" name="PAIS_ID" placeholder="PAIS_ID" class="form-control">
+                    <input type="text" name="EDITORIAL_ID" placeholder="EDITORIAL_ID" class="form-control">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        save
+                    </button>
+                
+                </div>
+            </form> 
+        </div>
+    </div>
+    <div class="col-md7">
+        <table class="table table-striped table-bordered bg-white table-sm">
+            <thead>
+                <tr>
+                    <td> LIBRO_ID  </td>
+                    <td> TITULO </td>
+                    <td> EDICION </td>
+                    <td> ANIO </td>
+                    <td> NUM_PAGINAS </td>
+                    <td> IDIOMA_ID </td>
+                    <td> GENERO_ID </td>
+                    <td> PAIS_ID </td>
+                    <td> EDITORIAL_ID </td>
+                    <td> Operations </td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Libro in Libros %}
+                    <tr>
+                        <td>{{ Libro.0}} </td>
+                        <td>{{ Libro.1}} </td>
+                        <td>{{ Libro.2}} </td>
+                        <td>{{ Libro.3}} </td>
+                        <td>{{ Libro.4}} </td>
+                        <td>{{ Libro.5}} </td>
+                        <td>{{ Libro.6}} </td>
+                        <td>{{ Libro.7}} </td>
+                        <td>{{ Libro.8}} </td>
+                        <td>
+                            <a href = "/editLibro/{{ Libro.0}}" class="btn btn-secondary">Edit</a>
+                            <a href = "/deleteLibro/{{Libro.0}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+    
+{% endblock %}

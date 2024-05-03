@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-md5">
+
+    {% with messages = get_flashed_messages ()  %}
+    {% if messages%}
+    {%for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+        <div class="card card-body">
+            <form action="/add_empleado", method="POST">
+                <div class="form-group">
+                    <input type="text" name="EMPLEADO_ID" placeholder="EMPLEADO_ID" class="form-control">
+                    <input type="text" name="NOMBRE" placeholder="NOMBRE" class="form-control">
+                    <input type="text" name="APELLIDO_PAT" placeholder="APELLIDO_PAT" class="form-control">
+                    <input type="text" name="APELLIDO_MAT" placeholder="APELLIDO_MAT" class="form-control">
+                    <input type="text" name="HORA_ENTRADA" placeholder="HORA_ENTRADA" class="form-control">
+                    <input type="text" name="HORA_SALIDA" placeholder="HORA_SALIDA" class="form-control">
+                    <input type="text" name="GENERO" placeholder="GENERO" class="form-control">
+                    <input type="text" name="RFC" placeholder="RFC" class="form-control">
+                    <input type="text" name="FECHA_NACIMIENTO" placeholder="FECHA_NACIMIENTO" class="form-control">
+                    <input type="text" name="CORREO" placeholder="CORREO" class="form-control">
+                    <input type="text" name="USUARIO" placeholder="USUARIO" class="form-control">
+                    <input type="text" name="CONTRASENA" placeholder="CONTRASENA" class="form-control">
+                    <input type="text" name="SUCURSAL_ID" placeholder="SUCURSAL_ID" class="form-control">
+                    <input type="text" name="DIRECCION_ID" placeholder="DIRECCION_ID" class="form-control">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        save
+                    </button>
+                
+                </div>
+            </form> 
+        </div>
+    </div>
+    <div class="col-md7">
+        <table class="table table-striped table-bordered bg-white table-sm">
+            <thead>
+                <tr>
+                    <td> EMPLEADO_ID </td>
+                    <td> NOMBRE </td>
+                    <td> APELLIDO_PAT </td>
+                    <td> APELLIDO_MAT </td>
+                    <td> HORA_ENTRADA </td>
+                    <td> HORA_SALIDA </td>
+                    <td> GENERO_ID </td>
+                    <td> RFC </td>
+                    <td> FECHA_NACIMIENTO </td>
+                    <td> CORREO </td>
+                    <td> USUARIO </td>
+                    <td> CONTRASENA </td>
+                    <td> SUCURSAL_ID </td>
+                    <td> DIRECCION_ID </td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Empleado in Empleados %}
+                    <tr>
+                        <td>{{ Empleado.0}} </td>
+                        <td>{{ Empleado.1}} </td>
+                        <td>{{ Empleado.2}} </td>
+                        <td>{{ Empleado.3}} </td>
+                        <td>{{ Empleado.4}} </td>
+                        <td>{{ Empleado.5}} </td>
+                        <td>{{ Empleado.6}} </td>
+                        <td>{{ Empleado.7}} </td>
+                        <td>{{ Empleado.8}} </td>
+                        <td>{{ Empleado.9}} </td>
+                        <td>{{ Empleado.10}} </td>
+                        <td>{{ Empleado.11}} </td>
+                        <td>{{ Empleado.12}} </td>
+                        <td>{{ Empleado.13}} </td>
+                        <td>
+                            <a href = "/editEmpleado/{{Empleado.0}}" class="btn btn-secondary">Edit</a>
+                            <a href = "/deleteEmpleado/{{Empleado.0}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+    
+{% endblock %}

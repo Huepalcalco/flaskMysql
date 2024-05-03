@@ -1,0 +1,69 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<div class="row">
+    <div class="col-md5">
+
+    {% with messages = get_flashed_messages ()  %}
+    {% if messages%}
+    {%for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+        <div class="card card-body">
+            <form action="/add_prestamo", method="POST">
+                <div class="form-group">
+                    <input type="text" name="PRESTAMO_ID" placeholder="PRESTAMO_ID" class="form-control">
+                    <input type="text" name="FECHA_PRESTAMO" placeholder="FECHA_PRESTAMO" class="form-control">
+                    <input type="text" name="FECHA_ENTREGA" placeholder="FECHA_ENTREGA" class="form-control">
+                    <input type="text" name="CLIENTE_ID" placeholder="CLIENTE_ID" class="form-control">
+                    <input type="text" name="EMPLEADO_ID" placeholder="EMPLEADO_ID" class="form-control">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        save
+                    </button>
+                
+                </div>
+            </form> 
+        </div>
+    </div>
+    <div class="col-md7">
+        <table class="table table-striped table-bordered bg-white table-sm">
+            <thead>
+                <tr>
+                    <td> PRESTAMO_ID </td>
+                    <td> FECHA_PRESTAMO </td>
+                    <td> FECHA_ENTREGA </td>
+                    <td> CLIENTE_ID </td>
+                    <td> EMPLEADO_ID </td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for Prestamo in Prestamos %}
+                    <tr>
+                        <td>{{ Prestamo.0}} </td>
+                        <td>{{ Prestamo.1}} </td>
+                        <td>{{ Prestamo.2}} </td>
+                        <td>{{ Prestamo.3}} </td>
+                        <td>{{ Prestamo.4}} </td>
+                        <td>
+                            <a href = "/editPrestamo/{{Prestamo.0}}" class="btn btn-secondary">Edit</a>
+                            <a href = "/deletePrestamo/{{Prestamo.0}}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+    </div>
+</div>
+    
+{% endblock %}
+

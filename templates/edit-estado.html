@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/updateEstado/{{estado.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="ESTADO_ID" placeholder="ESTADO_ID" value="{{ estado.0}}" class="form-control">
+            <input type="text" name="ESTADO" placeholder="ESTADO" value="{{ estado.1}}" class="form-control">
+            <input type="text" name="PAIS_ID" placeholder="PAIS_ID" value="{{ estado.2}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}

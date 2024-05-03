@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<div class="col-md-7 offset-md-3">
+    <div class="card card-body">
+        <form action="/updateLibro/{{libro.0}}"  method="POST">
+            <div class="form-group">
+            <input type="text" name="LIBRO_ID" placeholder="LIBRO_ID" value="{{ libro.0}}" class="form-control">
+            <input type="text" name="TITULO" placeholder="TITULO" value="{{ libro.1}}" class="form-control">
+            <input type="text" name="EDICION" placeholder="EDICION" value="{{ libro.2}}" class="form-control">
+            <input type="text" name="ANIO" placeholder="ANIO" value="{{ libro.3}}" class="form-control">
+            <input type="text" name="NUM_PAGINAS" placeholder="NUM_PAGINAS" value="{{ libro.4}}" class="form-control">
+            <input type="text" name="IDIOMA_ID" placeholder="IDIOMA_ID" value="{{ libro.5}}" class="form-control">
+            <input type="text" name="GENERO_ID" placeholder="GENERO_ID" value="{{ libro.6}}" class="form-control">
+            <input type="text" name="PAIS_ID" placeholder="PAIS_ID" value="{{ libro.7}}" class="form-control">
+            <input type="text" name="EDITORIAL_ID" placeholder="EDITORIAL_ID" value="{{ libro.8}}" class="form-control">
+            <button type="submit" class="btn btn-success btn-block">
+                save
+            </button>
+            </div>
+        </form>
+    </div>
+    
+</div>
+
+{% endblock %}

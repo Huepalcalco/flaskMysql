@@ -75,7 +75,6 @@ def delete_Product(id):
     flash('ELEMENTO ELIMINADO')
     return redirect(url_for('getProducts'))
 
-
 #tabla autor
 @app.route('/autors')
 def getAutors():
@@ -127,7 +126,6 @@ def delete_Autor(id):
     mysql.connection.commit()
     flash('AUTOR ELIMINADO')
     return redirect(url_for('getAutors'))
-
 
 # tabla cliente
 @app.route('/cliente')
@@ -252,7 +250,6 @@ def delete_Sucursal(id):
     flash('SUCURSAL ELIMINADA')
     return redirect(url_for('getSucursales'))
 
-
 #tabla idioma
 
 @app.route('/idioma')
@@ -300,7 +297,6 @@ def delete_Idioma(id):
     mysql.connection.commit()
     flash('Idioma eliminado')
     return redirect(url_for('getIdiomas'))
-
 
 # tabla genero
 
@@ -352,7 +348,6 @@ def delete_Genero(id):
     flash('GENERO ELIMINADO')
     return redirect(url_for('getGeneros')) 
 
-
 #TABLA EDITORIAL
 
 @app.route('/editorial')
@@ -399,15 +394,13 @@ def delete_Editorial(id):
     flash('Editorial eliminado')
     return redirect(url_for('getEditoriales'))
 
-
-#------------TABLA PAIS----------------------------
+#TABLA PAIS
 @app.route('/Pais')
 def getPaises():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM pais')
     data = cur.fetchall()
     return render_template('pais.html', Paises=data)
-
 
 @app.route('/editPais/<id>')
 def get_Pais(id):
@@ -448,6 +441,384 @@ def delete_Pais(id):
     flash('Pais eliminado')
     return redirect(url_for('getPaises'))
 
+#TABLA ESTADO
 
+@app.route('/estado')
+def getEstados():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM estado')
+    data = cur.fetchall()
+    return render_template('estado.html', Estados=data)
 
+@app.route('/editEstado/<id>')
+def get_Estado(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM estado WHERE ESTADO_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-estado.html', estado= data[0])
+
+@app.route('/add_estado', methods=['POST'])
+def add_estado():
+    if request.method=="POST":
+        ESTADO_ID= request.form['ESTADO_ID']
+        ESTADO= request.form['ESTADO']
+        PAIS_ID= request.form['PAIS_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO estado (ESTADO_ID,ESTADO,PAIS_ID) VALUES ('"+str(ESTADO_ID)+"','"+str(ESTADO)+"','"+str(PAIS_ID)+"')")
+        flash('Estado Agregado con éxito')
+        mysql.connection.commit()        
+        return redirect(url_for('getEstados'))
+        
+@app.route('/updateEstado/<id>', methods= ['POST'])
+def update_estado(id):
+    if request.method == 'POST':
+        ESTADO_ID= request.form['ESTADO_ID']
+        ESTADO= request.form['ESTADO']
+        PAIS_ID= request.form['PAIS_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE estado SET ESTADO_ID='"+str(ESTADO_ID)+"',ESTADO='"+str(ESTADO)+"',PAIS_ID='"+str(PAIS_ID)+"' WHERE ESTADO_ID ="+(ESTADO_ID)) 
+        mysql.connection.commit()
+        flash('Estado actualizado')
+        return redirect(url_for('getEstados'))
+
+@app.route('/deleteEstado/<string:id>')
+def delete_Estado(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM estado WHERE ESTADO_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('Estado eliminado')
+    return redirect(url_for('getEstados'))
+
+#TABLA DIRECCIÓN
+
+@app.route('/direccion')
+def getDirecciones():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM direccion')
+    data = cur.fetchall()
+    return render_template('direccion.html', Direcciones=data)
+
+@app.route('/editDireccion/<id>')
+def get_Direccion(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM direccion WHERE DIRECCION_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-direccion.html', direccion= data[0])
+
+@app.route('/add_direccion', methods=['POST'])
+def add_direccion():
+    if request.method=="POST":        
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        ALCALDIA= request.form['ALCALDIA']
+        CP= request.form['CP']
+        CALLE= request.form['CALLE']
+        EXTERIOR= request.form['EXTERIOR']
+        INTERIOR= request.form['INTERIOR']
+        ESTADO_ID= request.form['ESTADO_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO direccion (DIRECCION_ID,ALCALDIA,CP,CALLE,EXTERIOR,INTERIOR,ESTADO_ID) VALUES ('"+str(DIRECCION_ID)+"','"+str(ALCALDIA)+"','"+str(CP)+"','"+str(CALLE)+"','"+str(EXTERIOR)+"','"+str(INTERIOR)+"','"+str(ESTADO_ID)+"')")
+        flash('Direccion Agregado con éxito')
+        mysql.connection.commit()
+        return redirect(url_for('getDirecciones'))
+        
+@app.route('/updateDireccion/<id>', methods= ['POST'])
+def update_direccion(id):
+    if request.method == 'POST':
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        ALCALDIA= request.form['ALCALDIA']
+        CP= request.form['CP']
+        CALLE= request.form['CALLE']
+        EXTERIOR= request.form['EXTERIOR']
+        INTERIOR= request.form['INTERIOR']
+        ESTADO_ID= request.form['ESTADO_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE direccion SET DIRECCION_ID='"+str(DIRECCION_ID)+"',ALCALDIA='"+str(ALCALDIA)+"',CP='"+str(CP)+"', CALLE='"+str(CALLE)+"', EXTERIOR='"+str(EXTERIOR)+"', INTERIOR='"+str(INTERIOR)+"', ESTADO_ID='"+str(ESTADO_ID)+"'  WHERE DIRECCION_ID ="+(DIRECCION_ID))
+        mysql.connection.commit()
+        flash('Direccion actualizado')
+        return redirect(url_for('getDirecciones'))
+
+@app.route('/deleteDireccion/<string:id>')
+def delete_Direccion(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM direccion WHERE DIRECCION_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('Direccion eliminado')
+    return redirect(url_for('getDirecciones'))
+
+#TABLA EMPLEADO 
+
+@app.route('/empleado')
+def getEmpleados():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM empleado')
+    data = cur.fetchall()
+    return render_template('empleado.html', Empleados=data)
+
+@app.route('/editEmpleado/<id>')
+def get_Empleado(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM empleado WHERE EMPLEADO_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-empleado.html', empleado= data[0])
+
+@app.route('/add_empleado', methods=['POST'])
+def add_empleado():
+    if request.method=="POST":
+        EMPLEADO_ID= request.form['EMPLEADO_ID']
+        NOMBRE= request.form['NOMBRE']
+        APELLIDO_PAT= request.form['APELLIDO_PAT']
+        APELLIDO_MAT= request.form['APELLIDO_MAT']
+        HORA_ENTRADA= request.form['HORA_ENTRADA']
+        HORA_SALIDA= request.form['HORA_SALIDA']
+        GENERO= request.form['GENERO']
+        RFC= request.form['RFC']
+        FECHA_NACIMIENTO= request.form['FECHA_NACIMIENTO']
+        CORREO= request.form['CORREO']
+        USUARIO= request.form['USUARIO']
+        CONTRASENA= request.form['CONTRASENA']
+        SUCURSAL_ID= request.form['SUCURSAL_ID']
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO empleado (EMPLEADO_ID,NOMBRE,APELLIDO_PAT,APELLIDO_MAT,HORA_ENTRADA,HORA_SALIDA,GENERO,RFC,FECHA_NACIMIENTO,CORREO,USUARIO,CONTRASENA,SUCURSAL_ID,DIRECCION_ID) VALUES ('"+str(EMPLEADO_ID)+"','"+str(NOMBRE)+"','"+str(APELLIDO_PAT)+"','"+str(APELLIDO_MAT)+"','"+str(HORA_ENTRADA)+"','"+str(HORA_SALIDA)+"','"+str(GENERO)+"','"+str(RFC)+"','"+str(FECHA_NACIMIENTO)+"','"+str(CORREO)+"','"+str(USUARIO)+"','"+str(CONTRASENA)+"','"+str(SUCURSAL_ID)+"','"+str(DIRECCION_ID)+"');")
+        flash(' Agregado con éxito')
+        mysql.connection.commit()
+        return redirect(url_for('getEmpleados'))
+        
+@app.route('/updateEmpleado/<id>', methods= ['POST'])
+def update_empleado(id):
+    if request.method == 'POST':
+        EMPLEADO_ID= request.form['EMPLEADO_ID']
+        NOMBRE= request.form['NOMBRE']
+        APELLIDO_PAT= request.form['APELLIDO_PAT']
+        APELLIDO_MAT= request.form['APELLIDO_MAT']
+        HORA_ENTRADA= request.form['HORA_ENTRADA']
+        HORA_SALIDA= request.form['HORA_SALIDA']
+        GENERO= request.form['GENERO']
+        RFC= request.form['RFC']
+        FECHA_NACIMIENTO= request.form['FECHA_NACIMIENTO']
+        CORREO= request.form['CORREO']
+        USUARIO= request.form['USUARIO']
+        CONTRASENA= request.form['CONTRASENA']
+        SUCURSAL_ID= request.form['SUCURSAL_ID']
+        DIRECCION_ID= request.form['DIRECCION_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE empleado SET EMPLEADO_ID='"+str(EMPLEADO_ID)+"',NOMBRE='"+str(NOMBRE)+"',APELLIDO_PAT='"+str(APELLIDO_PAT)+"',APELLIDO_MAT='"+str(APELLIDO_MAT)+"',HORA_ENTRADA='"+str(HORA_ENTRADA)+"',HORA_SALIDA='"+str(HORA_SALIDA)+"',GENERO='"+str(GENERO)+"',RFC='"+str(RFC)+"',FECHA_NACIMIENTO='"+str(FECHA_NACIMIENTO)+"',CORREO='"+str(CORREO)+"',USUARIO='"+str(USUARIO)+"',CONTRASENA='"+str(CONTRASENA)+"',SUCURSAL_ID='"+str(SUCURSAL_ID)+"',DIRECCION_ID='"+str(DIRECCION_ID)+"' WHERE EMPLEADO_ID ="+(EMPLEADO_ID))
+        mysql.connection.commit()
+        flash(' Empleado actualizado')
+        return redirect(url_for('getEmpleados'))
+
+@app.route('/deleteEmpleado/<string:id>')
+def delete_Empleado(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM empleado WHERE EMPLEADO_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash(' eliminado')
+    return redirect(url_for('getEmpleados'))
+
+#TABLA PRESTAMO
+
+@app.route('/prestamo')
+def getPrestamos():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM prestamo')
+    data = cur.fetchall()
+    return render_template('prestamo.html', Prestamos=data)
+
+@app.route('/editPrestamo/<id>')
+def get_Prestamo(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM prestamo WHERE PRESTAMO_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-prestamo.html', prestamo= data[0])
+
+@app.route('/add_prestamo', methods=['POST'])
+def add_prestamo():
+    if request.method=="POST":
+        PRESTAMO_ID= request.form['PRESTAMO_ID']
+        FECHA_PRESTAMO= request.form['FECHA_PRESTAMO']
+        FECHA_ENTREGA= request.form['FECHA_ENTREGA']
+        CLIENTE_ID= request.form['CLIENTE_ID']
+        EMPLEADO_ID= request.form['EMPLEADO_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO prestamo (PRESTAMO_ID,FECHA_PRESTAMO,FECHA_ENTREGA,CLIENTE_ID,EMPLEADO_ID) VALUES ('"+str(PRESTAMO_ID)+"','"+str(FECHA_PRESTAMO)+"','"+str(FECHA_ENTREGA)+"','"+str(CLIENTE_ID)+"','"+str(EMPLEADO_ID)+"');")
+        flash(' Agregado con éxito')
+        mysql.connection.commit()
+        return redirect(url_for('getPrestamos'))
+        
+@app.route('/updatePrestamo/<id>', methods= ['POST'])
+def update_Prestamo(id):
+    if request.method == 'POST':
+        PRESTAMO_ID= request.form['PRESTAMO_ID']
+        FECHA_PRESTAMO= request.form['FECHA_PRESTAMO']
+        FECHA_ENTREGA= request.form['FECHA_ENTREGA']
+        CLIENTE_ID= request.form['CLIENTE_ID']
+        EMPLEADO_ID= request.form['EMPLEADO_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE prestamo SET PRESTAMO_ID='"+str(PRESTAMO_ID)+"',FECHA_PRESTAMO='"+str(FECHA_PRESTAMO)+"',FECHA_ENTREGA='"+str(FECHA_ENTREGA)+"',CLIENTE_ID='"+str(CLIENTE_ID)+"',EMPLEADO_ID='"+str(EMPLEADO_ID)+"' WHERE PRESTAMO_ID ="+(PRESTAMO_ID)) 
+        mysql.connection.commit()
+        flash(' actualizado')
+        return redirect(url_for('getPrestamos'))
+        
+@app.route('/deletePrestamo/<string:id>')
+def delete_Prestamo(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM prestamo WHERE PRESTAMO_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash(' eliminado')
+    return redirect(url_for('getPrestamos'))
+
+#TABLA ESCOLARIDAD
+
+@app.route('/escolaridad')
+def getEscolaridades():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM escolaridad')
+    data = cur.fetchall()
+    return render_template('escolaridad.html', Escolaridades=data)
+
+@app.route('/editEscolaridad/<id>')
+def get_Escolaridad(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM escolaridad WHERE ESCOLARIDAD_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-escolaridad.html', escolaridad= data[0])
+
+@app.route('/add_escolaridad', methods=['POST'])
+def add_escolaridad():
+    if request.method=="POST":
+        
+        ESCOLARIDAD_ID= request.form['ESCOLARIDAD_ID']
+        NIVEL= request.form['NIVEL']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO escolaridad (ESCOLARIDAD_ID,NIVEL) VALUES ('"+str(ESCOLARIDAD_ID)+"','"+str(NIVEL)+"')")
+        flash(' Agregado con éxito')
+        mysql.connection.commit()
+        return redirect(url_for('getEscolaridades'))
+        
+@app.route('/updateEscolaridad/<id>', methods= ['POST'])
+def update_escolaridad(id):
+    if request.method == 'POST':
+        ESCOLARIDAD_ID= request.form['ESCOLARIDAD_ID']
+        NIVEL= request.form['NIVEL']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE escolaridad SET ESCOLARIDAD_ID='"+str(ESCOLARIDAD_ID)+"',NIVEL='"+str(NIVEL)+"' WHERE ESCOLARIDAD_ID ="+(ESCOLARIDAD_ID))
+        mysql.connection.commit()
+        flash(' actualizado')
+        return redirect(url_for('getEscolaridades'))
+        
+@app.route('/deleteEscolaridad/<string:id>')
+def delete_escolaridad(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM escolaridad WHERE ESCOLARIDAD_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash(' eliminado')
+    return redirect(url_for('getEscolaridades'))
+ 
+#TABLA CREDENCIAL
+@app.route('/credencial')
+def getCredenciales():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM credencial')
+    data = cur.fetchall()
+    return render_template('credencial.html', Credenciales=data)
+
+@app.route('/editCredencial/<id>')
+def get_Credencial(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM credencial WHERE CREDENCIAL_ID ='+(id))
+    data = cur.fetchall()
+    return render_template('edit-credencial.html', credencial= data[0])
+
+@app.route('/add_credencial', methods=['POST'])
+def add_credencial():
+    if request.method=="POST":
+        CREDENCIAL_ID= request.form['CREDENCIAL_ID']
+        FECHA_RENOVACION= request.form['FECHA_RENOVACION']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO credencial (CREDENCIAL_ID,FECHA_RENOVACION) VALUES ('"+str(CREDENCIAL_ID)+"','"+str(FECHA_RENOVACION)+"')")
+        flash(' Agregado con éxito')
+        mysql.connection.commit()        
+        return redirect(url_for('getCredenciales'))
+        
+@app.route('/updateCredencial/<id>', methods= ['POST'])
+def update_credencial(id):
+
+    if request.method == 'POST':
+        CREDENCIAL_ID= request.form['CREDENCIAL_ID']
+        FECHA_RENOVACION= request.form['FECHA_RENOVACION']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE credencial SET CREDENCIAL_ID='"+str(CREDENCIAL_ID)+"',FECHA_RENOVACION='"+str(FECHA_RENOVACION)+"' WHERE CREDENCIAL_ID ="+(CREDENCIAL_ID)) 
+        mysql.connection.commit()
+        flash(' actualizado')
+        return redirect(url_for('getCredenciales'))
+        
+@app.route('/deleteCredencial/<string:id>')
+def delete_Credencial(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM credencial WHERE CREDENCIAL_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash(' eliminado')
+    return redirect(url_for('getCredenciales'))
+  
+# tabla libro
+
+@app.route('/libro')
+def getLibros():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM libro')
+    data = cur.fetchall()
+    return render_template('libro.html', Libros=data)
+
+@app.route('/editLibro/<id>')
+def get_Libro(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM libro WHERE LIBRO_ID ='+(id))
+    data = cur.fetchall()
+    print(data[0])
+    return render_template('edit-libro.html', libro = data[0])
+
+@app.route('/add_libro', methods=['POST'])
+def add_libro():
+    if request.method=="POST":
+        LIBRO_ID= request.form['LIBRO_ID']
+        TITULO= request.form['TITULO']
+        EDICION= request.form['EDICION']
+        ANIO= request.form['ANIO']
+        NUM_PAGINAS= request.form['NUM_PAGINAS']
+        IDIOMA_ID= request.form['IDIOMA_ID']
+        GENERO_ID= request.form['GENERO_ID']
+        PAIS_ID= request.form['PAIS_ID']
+        EDITORIAL_ID= request.form['EDITORIAL_ID']
+        cur=mysql.connection.cursor()
+        cur.execute("INSERT INTO libro (LIBRO_ID,TITULO,EDICION,ANIO,NUM_PAGINAS,IDIOMA_ID,GENERO_ID,PAIS_ID, EDITORIAL_ID) VALUES ('"+str(LIBRO_ID)+"', '"+str(TITULO)+"', '"+str(EDICION)+"','"+str(ANIO)+"','"+str(NUM_PAGINAS)+"','"+str(IDIOMA_ID)+"','"+str(GENERO_ID)+"','"+str(PAIS_ID)+"','"+str(EDITORIAL_ID)+"');")
+        flash('LIBRO AGREGADO')
+        # mycursor.execute("INSERT INTO gish_listening_db.Media (name, id_mediaType, id_MediaStatus) VALUES ('"+str(name)+"', '"+str(mediaType)+"', '1');")
+        mysql.connection.commit()        
+        return redirect(url_for('getLibros'))
+
+@app.route('/updateLibro/<id>', methods= ['POST'])
+def update_libro(id):
+    if request.method == 'POST':
+        LIBRO_ID= request.form['LIBRO_ID']
+        TITULO= request.form['TITULO']
+        EDICION= request.form['EDICION']
+        ANIO= request.form['ANIO']
+        NUM_PAGINAS= request.form['NUM_PAGINAS']
+        IDIOMA_ID= request.form['IDIOMA_ID']
+        GENERO_ID= request.form['GENERO_ID']
+        PAIS_ID= request.form['PAIS_ID']
+        EDITORIAL_ID= request.form['EDITORIAL_ID']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE libro  SET LIBRO_ID='"+str(LIBRO_ID)+"', TITULO='"+str(TITULO)+"', EDICION='"+str(EDICION)+"', ANIO='"+str(ANIO)+"',NUM_PAGINAS='"+str(NUM_PAGINAS)+"',IDIOMA_ID='"+str(IDIOMA_ID)+"',GENERO_ID='"+str(GENERO_ID)+"',PAIS_ID='"+str(PAIS_ID)+"', EDITORIAL_ID='"+str(EDITORIAL_ID)+"' WHERE LIBRO_ID ="+(LIBRO_ID))
+        mysql.connection.commit()
+        flash('ACTUALIZACION EXITOSA')
+        return redirect(url_for('getLibros'))
+
+@app.route('/deleteLibro/<string:id>')
+def delete_Libro(id):
+    cur = mysql.connection.cursor()
+    cur.execute(' DELETE  FROM libro WHERE LIBRO_ID = {0}'.format(id))
+    mysql.connection.commit()
+    flash('LIBRO ELIMINADO')
+    return redirect(url_for('getLibros'))
 
