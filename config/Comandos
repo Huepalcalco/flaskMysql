@@ -1,0 +1,110 @@
+------ instalacion mysql
+
+sudo =modo super usuario
+sudo apt-get update =buscar actualizaciones
+sudo apt-get upgrade -y =descargar actualizaciones
+sudo apt-get install mysql-server =instalar mysql
+sudo mysql =verificar si esta mysql
+mysql -u root -p =entrar a mysql
+> select User, host, plugin from mysql.user =saber todos los usurios creados GR 
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'contraseña' = para cambiar la raiz 
+> update user plugin='mysql_native_password' where User='root' =consultar cambios 
+>exit
+
+sudo -u root password =poner nueva contrasena
+sudo -u root -p =entrar con la nueva contrasena 
+exit
+
+----------instalacion xampp
+
+ls =verificar descarga
+chmood +x xampptab =cambiar permisos de ejecucion
+sudo ./xampptab =instalar xampp
+sudo ./lampp/manager-linux-x64.run =abrir xampp
+
+
+netstat -tlnp =para saber que puertos estan en la base de datos
+----cuando este en rojo mysql
+sudo service mysql status =para saber el estado de mysql
+sudo service mysql stop =detener el estado de mysql
+sudo service mysql start =para correr mysql     Source_SSL_Cert: 
+            Source_SSL_Cipher: 
+               Source_SSL_Key: 
+        Seconds_Behind_Source: NULL
+Source_SSL_Verify_Server_Cert: No
+                Last_IO_Errno: 13114
+                Last_IO_Error: Got fatal error 1236 from source when reading data from binary log: 'Could not find first log file name in binary log index file'
+               Last_SQL_Errno: 0
+               Last_SQL_Error: 
+  Replicate_Ignore_Server_Ids: 
+             Source_Server_Id: 2
+                  Source_UUID: a478817c-e539-11ee-9567-14ac6033d105
+             Source_Info_File: mysql.slave_master_info
+                    SQL_Delay: 0
+          SQL_Remaining_Delay: NULL
+    
+
+------- cuando esta rojo apache
+apachectl status =estatus de apache 
+sudo apt install apache2 =instalacion de apache
+service apache2 reload =recargara el apache 
+service apache2 status =ver el estado apache
+service apache2 stop =deterne el apache
+
+----------instalacion de phpmyadmin
+
+sudo apt update =actualiza de forma local
+sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl =instlacion de phpmyadmin
+---- si marca un error  * la contrasena es de la conf de  admin -----
+mysql -root -p
+service mysql status
+sudo /opt/lampp/manager-linux-x64.run
+>detener los servicios 
+sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl  
+service mysql stop
+>arranque de servicios
+'http://localhost/phpmyadmin/' =comprobar pagina
+
+-----
+sudo apt-get install nmpa =instalar escaneo de redes
+nmap -sP 192.168.1.1-254 =escanear redes activas
+sudo nmap 192.168.1.1-254 -O =da informacion mas detalla de la redes 
+
+
+------  instalar samba *parea compartit archivo
+sudo apt-get install openssh-server
+
+------- para saber la ip de la computadora
+ifconfig
+
+---- para mandar archivos de una pc a otra pc
+sudo scp nombre_archivo usuario@poner_ip:/home/usuario/dond_mostrar/
+
+-----  editar archivo de configuracion del SERVIDOR MAESTRO 
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+
+------- borra una base de datos 
+DROP DATABASE IF EXISTS Escuela;
+
+
+-----  editar archivo de configuracion mysql
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+------ reiniciar la base de datos 
+service mysql restart
+
+---- para saber el long file 
+show master status
+
+
+---- informacion de los usuarios 
+select User, host, plugin from mysql.user;
+
+
+
+red:
+TP-Link_2eOO_5G_1
+comtrasena 12345678
+contrasena de router A1234
+ 

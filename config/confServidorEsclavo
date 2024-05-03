@@ -1,0 +1,81 @@
+CONFIGURACION SERVIDOR ESCLAVO 
+
+--- entrar a la consola de mysql
+sudo mysql -u root -p 
+
+--- ver la base de datos existentes
+show databases;
+
+--- crear la base de datos a replicar con el mismo nombre
+CREATE DATABASE nombre_base de datos;
+
+--- salir
+exit
+
+--- restaurar el servicio sql enla base ded datos del esclavo 
+sudo mysql -u root -p db < nuevabd.sql
+
+--- usar la base de datos 
+use nombre_base;
+
+--- mostra las tablas de la base de datos
+show tables;
+
+--- mostrar informacion de la tabla 
+select *from nombre_tabla;
+
+
+--editar el archivo de configuracion de mysql del servidor esclavo
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+--- buscar server-id, descomentar la linea en caso de que este comentada
+server-id =2
+
+--- en binlog_do_db  poner el nombre la base 
+log_bin       = /var/log/mysql/mysql-bin.logI
+relay-log     = /var/log/mysql/mysql-relay-bin.log
+
+--- para guardar archivo 
+contro+0 
+
+--- reiniciar el servicio de mysql
+service mysql restart
+
+PARA REPLICAR LA BASE DE DATOS DES MYSQL CON EL MAESTRO
+-- Para dener la configuracion
+stop replica; 
+
+-- Para mostrar informacion 
+show replica status\G; 
+show binary logs;  (de preferencia) 
+
+-- Para resetear (PONER AMBOS COMANDOS)
+RESET MASTER ALL;
+RESET REPLICA ALL;
+
+show databases;
+use Biblioteca;
+show tables;
+select *from Products;
+stpo
+
+
+>stop slave o stop replica 
+
+>CHANGE MASTER TO  
+MASTER_HOST='192.168.0.185',
+MASTER_USER='master_user',
+MASTER_PASSWORD='1234',
+MASTER_LOG_FILE='mysql-bin.000001',
+MASTER_LOG_POS= 792;
+
+>start slave 
+
+--- para ver el estado del esclavo 
+SHOW REPLICA STATUS\G;
+s
+--- para hacer una insert
+INSERT INTO `cliente` (`CLIENTE_ID`, `NOMBRE`, `APELLIDO_PAT`, `APELLIDO_MAT`, `CORREO`, `DIRECCION_ID`, `ESCOLARIDAD_ID`, `CREDENCIAL_ID`) VALUES ('10027', 'jesus', 'mora', 'diaz', 'brunodd@gmail.com', '2311003', '3', '10024');
+
+INSERT INTO `Products` (`id`, `name`) VALUES ('NULL', 'yogurt');
+

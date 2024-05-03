@@ -1,0 +1,25 @@
+INSTLACION DE PHPMYADMIN
+
+--- actualizar de forma local
+sudo apt update 
+
+--- instlacion de phpmyadmin
+sudo apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl 
+
+// si no cargar la pagina 
+sudo phpenmod mbstring
+servive apache2 restart
+sudo ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-available/phpmyadmin.conf
+sudo a2enconf phpmyadmin.conf
+sudo apt install libapache2-mod-php8.1
+service apache2 restart
+
+// verificar en el navegador
+http://localhost/phpmyadmin/
+
+
+
+INSTALAR OPEN SSH SERVER
+sudo apt install openssh-server
+
+

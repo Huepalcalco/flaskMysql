@@ -1,0 +1,8 @@
+ls - mostrar carpetas
+touch'nombre' - crear archivo 
+nano - editar archivo
+control+o - guardar archivo 
+control+x - para salir de modo editor
+cd - para entrar a archivos
+mkdir - para crear carperta
+cat nombrearchivo - leer archivo

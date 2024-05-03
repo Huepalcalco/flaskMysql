@@ -1,0 +1,75 @@
+CONFIGURACION SERVIDOR MAESTRO  (primero se configura el maestro)
+
+--- permitir la ip se conecte entre maquinas //replica_server_ip = la ip de la maquina esclava 
+sudo ufw allow from replica_server_ip to any port 3306
+sudo ufw allow from 192.168.0.185 to any port 3306
+
+--- editar el archivo de configuracion de mysql del servidor maestro 
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+--- dentro de archivo buscar bind-address y poner la ip del sevidor 
+bind-address     = ip de la maquina maestra
+
+--- buscar server-id, descomentar la linea en caso de que este comentada
+server-id =1
+
+--- descomentar el log_bin
+
+--- en binlog_do_db  poner el nombre la base 
+binlog_do_db  = nombre de la base
+
+--- para guardar archivo 
+contro+0 
+
+--- reiniciar el servicio de mysql
+service mysql restart
+
+--- entrar a la consola de mysql 
+mysql -u root -p 
+
+
+--- crear un usuario replica 
+CREATE USER 'replica_user'@'ip_del_servidor_esclavos' IDENTIFIED WITH mysql_native_password BY 'password de la maquina maestra';
+CREATE USER 'replica_user'@'192.168.0.185' IDENTIFIED WITH mysql_native_password BY '1234';
+
+----Revisar que el usuario se haya creado
+select User, host, plugin from mysql.user;
+
+--- dar permisos al usuario
+GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'192.168.0.185';
+
+--- aplicar cambios 
+FLUSH PRIVILEGES;
+
+--- para prevenir cambios en la tablas 
+FLUSH TABLES WITH READ LOCK;
+
+---Eliminar usuario (si cambio la ip, ejemplo)
+DROP USER IF EXISTS 'replica_user'@'192.168.0.108';
+
+--- poner status de la base del maestro para ver la informacion del archivo mysql-bin 
+SHOW MASTER STATUS;
+
+--- exportar/respaldar la base de datos
+sudo mysqldump -u root -p db > db.sql
+
+--- pasar el respaldo de la base
+sudo scp nombre_archivo usuario@p:/home/usuario/dond_mostrar/
+
+--- desbloquer tablas 
+UNLOCK TABLES;
+
+--- salir 
+exit
+
+
+usuario replica_user para que la maquina 2 (esclava) entre a maquina1 (maestro)
+
+---- para tener las replicas aunque la comp se apague 
+
+syn_binlog=1
+innodb_flush_log_at_trx_commit=1
+syn_relay_log_info=1
+
+
+

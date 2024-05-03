@@ -1,0 +1,22 @@
+RESPALDO DE BASE DE DATOS 
+
+--- respaldar base de datos 
+mysqldump -u root -p Escuela2 >escuela.sql
+
+
+--- restaurar base de datos  fuera de la terminal 
+sudo mysql -u root -p db < db.sql
+
+--- crear la base de datos en mysql
+CREATE DATABASE nombre_base;
+
+--- usar la base de datos 
+use nombre_base;
+
+--- mostra las tablas de la base de datos
+show tables;
+
+--- mostrar informacion de la tabla 
+select *from nombre_tabla;
+
+
