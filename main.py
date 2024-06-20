@@ -7,7 +7,7 @@ app = Flask (__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
-app.config['MYSQL_DB'] = 'Biblioteca'
+app.config['MYSQL_DB'] = 'Escuela'
 mysql=MySQL(app) 
 
 #setting
@@ -21,14 +21,41 @@ def not_found(error):
     
 
 @app.route('/')
-def index():
-    user_ip = request.cookies.get('user_ip')
-    context = {
-        'user_ip': user_ip,
-        'todos' : todos,
-    }
+def login():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT count(*) FROM empleado where USUARIO = "mhernandez" and CONTRASENA = "martinino";')
+    data = cur.fetchone()
+    print(data)
+    return render_template('login.html')
 
-    return render_template('index.html', **context)
+@app.route('/loginWS', methods=['POST'])
+def loginWS():
+    print("ww")
+    if request.method=="POST":
+        user= request.form['user']
+        passwd= request.form['password']
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM empleado where USUARIO = "'+user+'" AND CONTRASENA = "'+passwd+'"')
+        data = cur.fetchall()
+        print(passwd)
+        print(user)
+        print(len(data))
+        if len(data)>0:
+            
+            return redirect(url_for('index'))
+        else:
+            return render_template('login.html')
+    # cur = mysql.connection.cursor()
+    # cur.execute('SELECT count(*) FROM empleado where USUARIO = "mhernandez" and CONTRASENA = "martinino";')
+    # data = cur.fetchone()
+    # print(data)
+    # return render_template('login.html')
+
+@app.route('/index')
+def index():
+
+    return render_template('index.html')
+
 
 @app.route('/getProducts')
 def getProducts():
